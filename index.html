@@ -1,1 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👍i Button Demo</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .header h1 {
+            margin-bottom: 10px;
+            color: #0066cc;
+        }
+        
+        .demo-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .demo-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .product-image {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .product-description {
+            margin-bottom: 20px;
+        }
+        
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .info-footer {
+            text-align: center;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>👍i Interactive Reaction Button Demo</h1>
+        <p>Try clicking on the reaction buttons below to see how they work!</p>
+    </div>
 
+    <div class="demo-section">
+        <h2 class="demo-title">Product Review: Wireless Headphones XZ-500</h2>
+        <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Headphones" class="product-image">
+        
+        <div class="product-description">
+            <p>These new wireless headphones offer incredible sound quality with deep bass and crystal-clear highs. With 30 hours of battery life and comfortable ear cushions, they're perfect for long listening sessions.</p>
+            <p>The noise cancellation feature is outstanding, blocking out even the loudest background noises, making them ideal for travel or office use. They also pair easily with multiple devices.</p>
+        </div>
+        
+        <div class="button-container">
+            <span>Did you find this review helpful?</span>
+            
+            <!-- 👍i Button - Standard -->
+            <div class="thumbs-i-container" id="thumbs-i-container-1">
+                <button class="thumbs-i-button" id="thumbs-i-button-1">
+                    👍 <span class="i-indicator">i</span>
+                </button>
+                
+                <div class="thumbs-i-popup" id="thumbs-i-popup-1">
+                    <h4>Why did you like this?</h4>
+                    <div class="reasons-grid">
+                        <button class="reason-option" data-reason="helpful">👌 Helpful info</button>
+                        <button class="reason-option" data-reason="detailed">🎯 Detailed review</button>
+                        <button class="reason-option" data-reason="deciding">💯 Helped me decide</button>
+                        <button class="reason-option" data-reason="share">🔄 Will share with others</button>
+                    </div>
+                    <div class="thanks-message" id="thanks-message-1">Thanks for your feedback!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2 class="demo-title">Fitness Program: 30-Day Challenge</h2>
+        <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Fitness" class="product-image">
+        
+        <div class="product-description">
+            <p>This comprehensive 30-day fitness program is designed for all levels, from beginners to advanced. It includes daily workout routines, nutrition guides, and progress tracking tools.</p>
+            <p>What makes this program unique is the personalized approach and the supportive community that helps keep you motivated throughout the challenge. Many participants have reported significant improvements in strength and endurance.</p>
+        </div>
+        
+        <div class="button-container">
+            <span>Interested in this program?</span>
+            
+            <!-- 👍i Button - Heart -->
+            <div class="thumbs-i-container" id="thumbs-i-container-2">
+                <button class="thumbs-i-button" id="thumbs-i-button-2">
+                    ❤️ <span class="i-indicator" style="background-color: #dc3545;">i</span>
+                </button>
+                
+                <div class="thumbs-i-popup" id="thumbs-i-popup-2">
+                    <h4>What interests you most?</h4>
+                    <div class="reasons-grid">
+                        <button class="reason-option" data-reason="results">💪 Quick results</button>
+                        <button class="reason-option" data-reason="routine">📅 Easy to follow</button>
+                        <button class="reason-option" data-reason="nutrition">🥗 Nutrition plan</button>
+                        <button class="reason-option" data-reason="community">👥 Community support</button>
+                    </div>
+                    <div class="thanks-message" id="thanks-message-2">Thanks for your interest!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="demo-section">
+        <h2 class="demo-title">Photography Course: Master Your DSLR</h2>
+        <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3" alt="Camera" class="product-image">
+        
+        <div class="product-description">
+            <p>Learn to take professional-quality photos with this comprehensive DSLR photography course. From basic settings to advanced composition techniques, this course covers everything you need to know.</p>
+            <p>The instructor has over 15 years of experience in commercial photography and provides personalized feedback on your assignments. You'll also get access to exclusive editing presets and a private community of photography enthusiasts.</p>
+        </div>
+        
+        <div class="button-container">
+            <span>Does this course look valuable?</span>
+            
+            <!-- 👍i Button - Star -->
+            <div class="thumbs-i-container" id="thumbs-i-container-3">
+                <button class="thumbs-i-button" id="thumbs-i-button-3">
+                    ⭐ <span class="i-indicator" style="background-color: #6f42c1;">i</span>
+                </button>
+                
+                <div class="thumbs-i-popup" id="thumbs-i-popup-3">
+                    <h4>What appeals to you?</h4>
+                    <div class="reasons-grid">
+                        <button class="reason-option" data-reason="comprehensive">📚 Comprehensive</button>
+                        <button class="reason-option" data-reason="instructor">🎓 Expert instructor</button>
+                        <button class="reason-option" data-reason="feedback">💬 Personalized feedback</button>
+                        <button class="reason-option" data-reason="resources">🎁 Bonus resources</button>
+                    </div>
+                    <div class="thanks-message" id="thanks-message-3">Thanks for your feedback!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="info-footer">
+        <p>This is a demonstration of the 👍i reaction button system. The buttons shown above are fully functional examples.</p>
+    </div>
+
+    <style>
+    /* Reaction Button Styles */
+    .thumbs-i-container {
+        display: inline-block;
+        position: relative;
+    }
+    
+    .thumbs-i-button {
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        position: relative;
+        padding: 5px;
+        transition: transform 0.2s ease;
+    }
+    
+    .thumbs-i-button:hover {
+        transform: scale(1.1);
+    }
+    
+    .i-indicator {
+        position: absolute;
+        top: 0;
+        right: -2px;
+        background: #0066cc;
+        color: white;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        font-size: 12px;
+        font-style: italic;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Popup Styles */
+    .thumbs-i-popup {
+        display: none;
+        position: absolute;
+        left: 0;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        width: 250px;
+        z-index: 1000;
+        animation: thumbsiFadeIn 0.2s ease-out;
+        padding: 12px;
+        /* Default position top */
+        top: -125px;
+    }
+    
+    @keyframes thumbsiFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    .thumbs-i-popup h4 {
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: #333;
+        text-align: center;
+    }
+    
+    .reasons-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 8px;
+    }
+    
+    .reason-option {
+        background: #f0f0f0;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 4px;
+        font-size: 13px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+    }
+    
+    .reason-option:hover {
+        background: #e0e0e0;
+    }
+    
+    .reason-option.selected {
+        background: #0066cc;
+        color: white;
+    }
+    
+    #thumbs-i-popup-2 .reason-option.selected {
+        background: #dc3545;
+    }
+    
+    #thumbs-i-popup-3 .reason-option.selected {
+        background: #6f42c1;
+    }
+    
+    /* Thank you message */
+    .thanks-message {
+        display: none;
+        text-align: center;
+        font-size: 14px;
+        color: #0066cc;
+        margin-top: 4px;
+    }
+    
+    #thanks-message-2 {
+        color: #dc3545;
+    }
+    
+    #thanks-message-3 {
+        color: #6f42c1;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+        .thumbs-i-popup {
+            width: 220px;
+        }
+        
+        .reason-option {
+            font-size: 12px;
+            padding: 8px 2px;
+        }
+    }
+    </style>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Configure all 👍i buttons
+        setupThumbsI('1');
+        setupThumbsI('2');
+        setupThumbsI('3');
+        
+        function setupThumbsI(id) {
+            // Elements
+            const thumbsButton = document.getElementById(`thumbs-i-button-${id}`);
+            const popup = document.getElementById(`thumbs-i-popup-${id}`);
+            const reasonOptions = popup.querySelectorAll('.reason-option');
+            const thanksMessage = document.getElementById(`thanks-message-${id}`);
+            
+            // State
+            let isLiked = false;
+            let selectedReason = null;
+            
+            // Show/hide popup with smart positioning
+            thumbsButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                
+                if (!isLiked) {
+                    isLiked = true;
+                    thumbsButton.style.opacity = '1';
+                    
+                    // Smart positioning logic
+                    positionPopup(thumbsButton, popup);
+                    popup.style.display = 'block';
+                } else {
+                    popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+                    if (popup.style.display === 'block') {
+                        positionPopup(thumbsButton, popup);
+                    }
+                }
+            });
+            
+            // Handle reason selection
+            reasonOptions.forEach(option => {
+                option.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    
+                    // Toggle selection
+                    if (this.classList.contains('selected')) {
+                        this.classList.remove('selected');
+                        selectedReason = null;
+                        thanksMessage.style.display = 'none';
+                    } else {
+                        // Deselect all options
+                        reasonOptions.forEach(opt => opt.classList.remove('selected'));
+                        
+                        // Select this option
+                        this.classList.add('selected');
+                        selectedReason = this.dataset.reason;
+                        thanksMessage.style.display = 'block';
+                        
+                        // Hide popup after a delay
+                        setTimeout(() => {
+                            popup.style.display = 'none';
+                        }, 1500);
+                    }
+                });
+            });
+        }
+        
+        // Close popups when clicking outside
+        document.addEventListener('click', function(e) {
+            const popups = document.querySelectorAll('.thumbs-i-popup');
+            const buttons = document.querySelectorAll('.thumbs-i-button');
+            
+            // Check if click is outside any popup or button
+            let outsideClick = true;
+            
+            for (let i = 0; i < popups.length; i++) {
+                if (popups[i].contains(e.target) || buttons[i].contains(e.target)) {
+                    outsideClick = false;
+                    break;
+                }
+            }
+            
+            // If click is outside, close all popups
+            if (outsideClick) {
+                popups.forEach(popup => {
+                    popup.style.display = 'none';
+                });
+            }
+        });
+        
+        // Position popup to be visible in viewport
+        function positionPopup(button, popup) {
+            // Get button position
+            const buttonRect = button.getBoundingClientRect();
+            const popupHeight = 140; // Approximate height of popup
+            
+            // Check if there's room above
+            if (buttonRect.top > popupHeight + 20) {
+                // Position above
+                popup.style.top = '-125px';
+                popup.style.bottom = 'auto';
+            } else {
+                // Position below
+                popup.style.top = 'auto';
+                popup.style.bottom = '-125px';
+            }
+            
+            // Adjust horizontal position to ensure it's visible
+            const viewportWidth = window.innerWidth;
+            if (buttonRect.left < 125) {
+                // Too close to left edge
+                popup.style.left = '0';
+            } else if (buttonRect.left + 125 > viewportWidth) {
+                // Too close to right edge
+                popup.style.left = 'auto';
+                popup.style.right = '0';
+            } else {
+                // Center aligned
+                popup.style.left = '-112px';
+            }
+        }
+    });
+    </script>
+</body>
+</html>
