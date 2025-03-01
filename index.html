@@ -428,3 +428,1176 @@
     </script>
 </body>
 </html>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👍i Generator with Counter Support</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            line-height: 1.4;
+            color: #333;
+            background-color: #f5f5f7;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: #0066cc;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+        
+        .main {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        
+        @media (min-width: 768px) {
+            .main {
+                flex-direction: row;
+                gap: 20px;
+            }
+            
+            .form-section {
+                flex: 1;
+            }
+            
+            .preview-section {
+                flex: 1;
+            }
+        }
+        
+        .section-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* Form Styles */
+        .form-section {
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        input[type="text"], 
+        input[type="url"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .reason-inputs {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        
+        /* Emoji Input Styles */
+        .emoji-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .emoji-display {
+            font-size: 22px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f7;
+            border-radius: 6px 0 0 6px;
+            border: 1px solid #ddd;
+            border-right: none;
+        }
+        
+        .emoji-input-container input {
+            border-radius: 0 6px 6px 0;
+            flex: 1;
+        }
+        
+        .emoji-choices {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 8px;
+            background: #f5f5f7;
+            border-radius: 6px;
+        }
+        
+        .emoji-choice {
+            font-size: 20px;
+            cursor: pointer;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border-radius: 6px;
+            transition: transform 0.2s;
+        }
+        
+        .emoji-choice:hover {
+            transform: scale(1.1);
+            background: #e8f0fe;
+        }
+        
+        .emoji-input-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .emoji-toggle {
+            font-size: 12px;
+            color: #0066cc;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+        
+        .color-picker {
+            margin-top: 15px;
+        }
+        
+        .color-options {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: transform 0.2s;
+            border: 2px solid transparent;
+        }
+        
+        .color-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option.selected {
+            border-color: #333;
+            transform: scale(1.1);
+        }
+        
+        .action-buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .primary-button {
+            background-color: #0066cc;
+            color: white;
+        }
+        
+        .primary-button:hover {
+            background-color: #0055b3;
+        }
+        
+        .secondary-button {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+        
+        .secondary-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        /* Main Button Emoji */
+        .main-emoji-selector {
+            margin-top: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .main-emoji-choices {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        
+        .main-emoji-choice {
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f5f5f7;
+            border-radius: 6px;
+            transition: transform 0.2s;
+        }
+        
+        .main-emoji-choice:hover {
+            transform: scale(1.1);
+            background: #e8f0fe;
+        }
+        
+        .main-emoji-choice.selected {
+            background: #e8f0fe;
+            border: 2px solid #0066cc;
+        }
+        
+        /* Preview Styles */
+        .preview-section {
+            background: #f7f7f7;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        
+        .preview-container {
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            border: 1px dashed #ddd;
+        }
+        
+        .preview-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        /* Thumbs-i Preview Styles */
+        .thumbs-i-container {
+            display: inline-block;
+            position: relative;
+        }
+        
+        .thumbs-i-button {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            position: relative;
+            padding: 5px;
+            transition: transform 0.2s ease;
+            display: flex;
+            align-items: center;
+        }
+        
+        .thumbs-i-button:hover {
+            transform: scale(1.1);
+        }
+        
+        .i-indicator {
+            position: absolute;
+            top: 0;
+            right: -2px;
+            background: #0066cc; /* This will be dynamic */
+            color: white;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            font-size: 12px;
+            font-style: italic;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Counter styles */
+        .counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f0f0;
+            color: #666;
+            font-size: 12px;
+            font-weight: bold;
+            height: 20px;
+            min-width: 20px;
+            border-radius: 10px;
+            margin-left: 6px;
+            padding: 0 6px;
+        }
+        
+        .counter:empty {
+            display: none;
+        }
+        
+        /* Popup Styles */
+        .thumbs-i-popup {
+            display: none;
+            position: absolute;
+            left: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            width: 250px;
+            z-index: 1000;
+            animation: thumbsiFadeIn 0.2s ease-out;
+            padding: 12px;
+            /* Default position top */
+            top: -160px;
+        }
+        
+        @keyframes thumbsiFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .thumbs-i-popup h4 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            color: #333;
+            text-align: center;
+        }
+        
+        .reasons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .reason-option {
+            background: #f0f0f0;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 4px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .reason-option .reason-text {
+            flex: 1;
+        }
+        
+        .reason-option .count {
+            font-size: 11px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 1px 5px;
+            margin-left: 4px;
+            min-width: 16px;
+            text-align: center;
+        }
+        
+        .reason-option:hover {
+            background: #e0e0e0;
+        }
+        
+        .reason-option.selected {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .reason-option.selected .count {
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        /* Thank you message */
+        .thanks-message {
+            display: none;
+            text-align: center;
+            font-size: 14px;
+            color: #0066cc;
+            margin-top: 4px;
+        }
+        
+        /* Code Output Styles */
+        .code-output {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .code-title {
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .code-container {
+            background: #f0f0f0;
+            border-radius: 6px;
+            padding: 15px;
+            position: relative;
+            overflow-x: auto;
+            max-height: 300px;
+        }
+        
+        .code-text {
+            font-family: monospace;
+            white-space: pre-wrap;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        
+        .copy-button {
+            font-size: 14px;
+            padding: 6px 12px;
+        }
+        
+        .success-message {
+            display: none;
+            color: #28a745;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👍i Generator with Counter Support</h1>
+            <p>Create a customized reaction button with your choice of emoji</p>
+        </div>
+        
+        <div class="main">
+            <div class="form-section">
+                <h2 class="section-title">Create Your Reaction Button</h2>
+                
+                <form id="generator-form">
+                    <div class="form-group">
+                        <label for="product-name">Content Title:</label>
+                        <input type="text" id="product-name" placeholder="Product or Content Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="affiliate-link">Affiliate Link (optional):</label>
+                        <input type="url" id="affiliate-link" placeholder="https://example.com/your-link">
+                    </div>
+                    
+                    <!-- Main Emoji Selector -->
+                    <div class="main-emoji-selector">
+                        <label>Choose Your Main Emoji:</label>
+                        <div class="main-emoji-choices">
+                            <div class="main-emoji-choice selected" data-emoji="👍">👍</div>
+                            <div class="main-emoji-choice" data-emoji="❤️">❤️</div>
+                            <div class="main-emoji-choice" data-emoji="😍">😍</div>
+                            <div class="main-emoji-choice" data-emoji="👏">👏</div>
+                            <div class="main-emoji-choice" data-emoji="🔥">🔥</div>
+                            <div class="main-emoji-choice" data-emoji="💯">💯</div>
+                            <div class="main-emoji-choice" data-emoji="🙏">🙏</div>
+                            <div class="main-emoji-choice" data-emoji="⭐">⭐</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reason Options with Emoji -->
+                    <div class="reason-inputs">
+                        <label>Reason Options (4):</label>
+                        
+                        <div class="form-group">
+                            <div class="emoji-input-label">
+                                <label for="reason1">Reason 1:</label>
+                                <span class="emoji-toggle" data-target="emoji-choices-1">Show emoji options</span>
+                            </div>
+                            <div class="emoji-input-container">
+                                <div class="emoji-display" id="emoji-display-1">👌</div>
+                                <input type="text" id="reason1" placeholder="Enter reason" value="Helpful info" required>
+                            </div>
+                            <div class="emoji-choices" id="emoji-choices-1" style="display: none;">
+                                <div class="emoji-choice" data-target="1" data-emoji="👌">👌</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="👍">👍</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="✅">✅</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="💡">💡</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="🔍">🔍</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="📚">📚</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="📝">📝</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="📌">📌</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="emoji-input-label">
+                                <label for="reason2">Reason 2:</label>
+                                <span class="emoji-toggle" data-target="emoji-choices-2">Show emoji options</span>
+                            </div>
+                            <div class="emoji-input-container">
+                                <div class="emoji-display" id="emoji-display-2">🎯</div>
+                                <input type="text" id="reason2" placeholder="Enter reason" value="Great explanation" required>
+                            </div>
+                            <div class="emoji-choices" id="emoji-choices-2" style="display: none;">
+                                <div class="emoji-choice" data-target="2" data-emoji="🎯">🎯</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="🔥">🔥</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="💬">💬</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="🗣️">🗣️</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="📊">📊</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="🧠">🧠</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="📢">📢</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="🔠">🔠</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="emoji-input-label">
+                                <label for="reason3">Reason 3:</label>
+                                <span class="emoji-toggle" data-target="emoji-choices-3">Show emoji options</span>
+                            </div>
+                            <div class="emoji-input-container">
+                                <div class="emoji-display" id="emoji-display-3">💯</div>
+                                <input type="text" id="reason3" placeholder="Enter reason" value="Just what I needed" required>
+                            </div>
+                            <div class="emoji-choices" id="emoji-choices-3" style="display: none;">
+                                <div class="emoji-choice" data-target="3" data-emoji="💯">💯</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="✨">✨</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="⚡">⚡</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="🏆">🏆</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="🎁">🎁</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="💪">💪</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="🎉">🎉</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="👏">👏</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="emoji-input-label">
+                                <label for="reason4">Reason 4:</label>
+                                <span class="emoji-toggle" data-target="emoji-choices-4">Show emoji options</span>
+                            </div>
+                            <div class="emoji-input-container">
+                                <div class="emoji-display" id="emoji-display-4">🔄</div>
+                                <input type="text" id="reason4" placeholder="Enter reason" value="Will recommend" required>
+                            </div>
+                            <div class="emoji-choices" id="emoji-choices-4" style="display: none;">
+                                <div class="emoji-choice" data-target="4" data-emoji="🔄">🔄</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="📣">📣</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="📲">📲</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="📩">📩</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="📱">📱</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="🗣️">🗣️</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="👨‍👩‍👧‍👦">👨‍👩‍👧‍👦</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="👥">👥</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="color-picker">
+                        <label>Button Color:</label>
+                        <div class="color-options">
+                            <div class="color-option selected" style="background-color: #0066cc" data-color="#0066cc"></div>
+                            <div class="color-option" style="background-color: #28a745" data-color="#28a745"></div>
+                            <div class="color-option" style="background-color: #dc3545" data-color="#dc3545"></div>
+                            <div class="color-option" style="background-color: #6c757d" data-color="#6c757d"></div>
+                            <div class="color-option" style="background-color: #6f42c1" data-color="#6f42c1"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="generate-button" class="button primary-button">Generate Code</button>
+                        <button type="button" id="reset-button" class="button secondary-button">Reset Form</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="preview-section">
+                <h2 class="section-title">Preview</h2>
+                <div class="preview-container">
+                    <h3 class="preview-title" id="preview-title">Product Review</h3>
+                    <p>This is a preview of your reaction button:</p>
+                    <div class="thumbs-i-container" id="preview-container">
+                        <button class="thumbs-i-button" id="preview-button">
+                            👍 <span class="i-indicator">i</span>
+                            <span class="counter" id="preview-counter">0</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="code-output" id="code-output">
+                    <div class="code-title">
+                        <span>Your Reaction Button Code (Copy & Paste This):</span>
+                        <button class="button secondary-button copy-button" id="copy-button">Copy Code</button>
+                    </div>
+                    <div class="code-container">
+                        <pre class="code-text" id="generated-code"></pre>
+                    </div>
+                    <div class="success-message" id="success-message">Code copied to clipboard!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</antArtifact>​​​​​​​​​​​​​​​​
+<!-- Add this JavaScript code after the HTML in Part 1 -->
+
+<script>
+    // DOM Elements
+    const form = document.getElementById('generator-form');
+    const productNameInput = document.getElementById('product-name');
+    const affiliateLinkInput = document.getElementById('affiliate-link');
+    const reason1Input = document.getElementById('reason1');
+    const reason2Input = document.getElementById('reason2');
+    const reason3Input = document.getElementById('reason3');
+    const reason4Input = document.getElementById('reason4');
+    const colorOptions = document.querySelectorAll('.color-option');
+    const mainEmojiChoices = document.querySelectorAll('.main-emoji-choice');
+    const generateButton = document.getElementById('generate-button');
+    const resetButton = document.getElementById('reset-button');
+    const previewTitle = document.getElementById('preview-title');
+    const previewButton = document.getElementById('preview-button');
+    const previewCounter = document.getElementById('preview-counter');
+    const codeOutput = document.getElementById('code-output');
+    const generatedCode = document.getElementById('generated-code');
+    const copyButton = document.getElementById('copy-button');
+    const successMessage = document.getElementById('success-message');
+    const emojiToggles = document.querySelectorAll('.emoji-toggle');
+    const emojiChoices = document.querySelectorAll('.emoji-choice');
+    
+    // Current state
+    let currentColor = '#0066cc';
+    let currentMainEmoji = '👍';
+    let currentEmojiMap = {
+        1: '👌',
+        2: '🎯',
+        3: '💯',
+        4: '🔄'
+    };
+    let previewCount = 0;
+    
+    // Toggle emoji choice panels
+    emojiToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            const targetId = this.dataset.target;
+            const targetPanel = document.getElementById(targetId);
+            
+            if (targetPanel.style.display === 'none') {
+                targetPanel.style.display = 'flex';
+                this.textContent = 'Hide emoji options';
+            } else {
+                targetPanel.style.display = 'none';
+                this.textContent = 'Show emoji options';
+            }
+        });
+    });
+    
+    // Handle emoji selection
+    emojiChoices.forEach(choice => {
+        choice.addEventListener('click', function() {
+            const targetId = this.dataset.target;
+            const emoji = this.dataset.emoji;
+            const displayElement = document.getElementById(`emoji-display-${targetId}`);
+            
+            // Update the display
+            displayElement.textContent = emoji;
+            
+            // Update state
+            currentEmojiMap[targetId] = emoji;
+            
+            // Update preview
+            updatePreview();
+        });
+    });
+    
+    // Handle main emoji selection
+    mainEmojiChoices.forEach(choice => {
+        choice.addEventListener('click', function() {
+            // Update selected state
+            mainEmojiChoices.forEach(opt => opt.classList.remove('selected'));
+            this.classList.add('selected');
+            
+            // Update current emoji
+            currentMainEmoji = this.dataset.emoji;
+            
+            // Update preview
+            updatePreview();
+        });
+    });
+    
+    // Handle color selection
+    colorOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            // Update selected state
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+            option.classList.add('selected');
+            
+            // Update current color
+            currentColor = option.dataset.color;
+            
+            // Update preview
+            updatePreview();
+        });
+    });
+    
+    // Preview interaction 
+    previewButton.addEventListener('click', function() {
+        // Increment preview counter
+        previewCount++;
+        previewCounter.textContent = previewCount;
+        previewCounter.style.display = 'inline-flex';
+    });
+    
+    // Update preview based on form inputs
+    function updatePreview() {
+        // Update title
+        const productName = productNameInput.value || 'Product Review';
+        previewTitle.textContent = productName;
+        
+        // Update main emoji
+        const buttonContent = `${currentMainEmoji} <span class="i-indicator">i</span>`;
+        previewButton.innerHTML = buttonContent;
+        
+        if (previewCount > 0) {
+            previewButton.innerHTML += `<span class="counter" id="preview-counter">${previewCount}</span>`;
+        }
+        
+        // Update button color
+        const iIndicator = previewButton.querySelector('.i-indicator');
+        iIndicator.style.backgroundColor = currentColor;
+    }
+    
+    // Generate code based on form inputs
+    function generateCode() {
+        const productName = productNameInput.value || 'Product Review';
+        const affiliateLink = affiliateLinkInput.value || '';
+        const reason1 = reason1Input.value || 'Helpful info';
+        const reason2 = reason2Input.value || 'Great explanation';
+        const reason3 = reason3Input.value || 'Just what I needed';
+        const reason4 = reason4Input.value || 'Will recommend';
+        
+        // Create the HTML code
+        const code = `<!-- Reaction Button for "${productName}" with Counter Support -->
+<div class="thumbs-i-container" id="thumbs-i-container">
+    <button class="thumbs-i-button" id="thumbs-i-button">
+        ${currentMainEmoji} <span class="i-indicator">i</span>
+        <span class="counter" id="main-counter"></span>
+    </button>
+    
+    <div class="thumbs-i-popup" id="thumbs-i-popup">
+        <h4>Why did you like this?</h4>
+        <div class="reasons-grid">
+            <button class="reason-option" data-reason="reason1">
+                <span class="reason-text">${currentEmojiMap[1]} ${reason1}</span>
+                <span class="count" id="count-reason1">0</span>
+            </button>
+            <button class="reason-option" data-reason="reason2">
+                <span class="reason-text">${currentEmojiMap[2]} ${reason2}</span>
+                <span class="count" id="count-reason2">0</span>
+            </button>
+            <button class="reason-option" data-reason="reason3">
+                <span class="reason-text">${currentEmojiMap[3]} ${reason3}</span>
+                <span class="count" id="count-reason3">0</span>
+            </button>
+            <button class="reason-option" data-reason="reason4">
+                <span class="reason-text">${currentEmojiMap[4]} ${reason4}</span>
+                <span class="count" id="count-reason4">0</span>
+            </button>
+        </div>
+        <div class="thanks-message" id="thanks-message">Thanks for your feedback!</div>
+    </div>
+</div>
+
+<style>
+/* Reaction Button Styles */
+.thumbs-i-container {
+    display: inline-block;
+    position: relative;
+}
+
+.thumbs-i-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    position: relative;
+    padding: 5px;
+    transition: transform 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.thumbs-i-button:hover {
+    transform: scale(1.1);
+}
+
+.i-indicator {
+    position: absolute;
+    top: 0;
+    right: -2px;
+    background: ${currentColor};
+    color: white;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    font-size: 12px;
+    font-style: italic;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Counter styles */
+.counter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    color: #666;
+    font-size: 12px;
+    font-weight: bold;
+    height: 20px;
+    min-width: 20px;
+    border-radius: 10px;
+    margin-left: 6px;
+    padding: 0 6px;
+}
+
+.counter:empty {
+    display: none;
+}
+
+/* Popup Styles */
+.thumbs-i-popup {
+    display: none;
+    position: absolute;
+    left: 0;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    width: 250px;
+    z-index: 1000;
+    animation: thumbsiFadeIn 0.2s ease-out;
+    padding: 12px;
+    /* Default position top */
+    top: -160px;
+}
+
+@keyframes thumbsiFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.thumbs-i-popup h4 {
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #333;
+    text-align: center;
+}
+
+.reasons-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.reason-option {
+    background: #f0f0f0;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 4px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.reason-option .reason-text {
+    flex: 1;
+}
+
+.reason-option .count {
+    font-size: 11px;
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 1px 5px;
+    margin-left: 4px;
+    min-width: 16px;
+    text-align: center;
+}
+
+.reason-option:hover {
+    background: #e0e0e0;
+}
+
+.reason-option.selected {
+    background: ${currentColor};
+    color: white;
+}
+
+.reason-option.selected .count {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Thank you message */
+.thanks-message {
+    display: none;
+    text-align: center;
+    font-size: 14px;
+    color: ${currentColor};
+    margin-top: 4px;
+}
+</style>
+
+<script>
+// Reaction Button Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Elements
+    const thumbsButton = document.getElementById('thumbs-i-button');
+    const popup = document.getElementById('thumbs-i-popup');
+    const reasonOptions = document.querySelectorAll('.reason-option');
+    const thanksMessage = document.getElementById('thanks-message');
+    const mainCounter = document.getElementById('main-counter');
+    
+    // State
+    let isLiked = false;
+    let selectedReason = null;
+    let mainCount = 0;
+    
+    // Show/hide popup with smart positioning
+    thumbsButton.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        if (!isLiked) {
+            isLiked = true;
+            thumbsButton.style.opacity = '1';
+            
+            // Increment main counter
+            mainCount++;
+            mainCounter.textContent = mainCount;
+            mainCounter.style.display = 'inline-flex';
+            
+            // Smart positioning logic
+            positionPopup();
+            popup.style.display = 'block';
+        } else {
+            popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
+            if (popup.style.display === 'block') {
+                positionPopup();
+            }
+        }
+    });
+    
+    // Handle reason selection
+    reasonOptions.forEach(option => {
+        option.addEventListener('click', function(e) {
+            e.stopPropagation();
+            
+            const reason = this.dataset.reason;
+            const countElement = document.getElementById('count-' + reason);
+            
+            // Toggle selection
+            if (this.classList.contains('selected')) {
+                // Deselect this option
+                this.classList.remove('selected');
+                selectedReason = null;
+                thanksMessage.style.display = 'none';
+                
+                // Decrement counter
+                let count = parseInt(countElement.textContent) - 1;
+                countElement.textContent = Math.max(0, count);
+            } else {
+                // Deselect all options
+                reasonOptions.forEach(opt => {
+                    if (opt.classList.contains('selected')) {
+                        const prevReason = opt.dataset.reason;
+                        const prevCountElement = document.getElementById('count-' + prevReason);
+                        let prevCount = parseInt(prevCountElement.textContent) - 1;
+                        prevCountElement.textContent = Math.max(0, prevCount);
+                        opt.classList.remove('selected');
+                    }
+                });
+                
+                // Select this option
+                this.classList.add('selected');
+                selectedReason = reason;
+                thanksMessage.style.display = 'block';
+                
+                // Increment counter
+                let count = parseInt(countElement.textContent) + 1;
+                countElement.textContent = count;
+                
+                // Hide popup after a delay
+                setTimeout(() => {
+                    popup.style.display = 'none';
+                }, 1500);
+            }
+            
+            ${affiliateLink ? `// Optional: Track click or redirect
+            if (selectedReason) {
+                console.log('Selected reason:', selectedReason);
+                // window.open('${affiliateLink}', '_blank');
+            }` : ''}
+        });
+    });
+    
+    // Position popup to be visible in viewport
+    function positionPopup() {
+        // Get button position
+        const buttonRect = thumbsButton.getBoundingClientRect();
+        const popupHeight = 160; // Approximate height of popup
+        
+        // Check if there's room above
+        if (buttonRect.top > popupHeight + 20) {
+            // Position above
+            popup.style.top = '-160px';
+            popup.style.bottom = 'auto';
+        } else {
+            // Position below
+            popup.style.top = 'auto';
+            popup.style.bottom = '-160px';
+        }
+        
+        // Adjust horizontal position to ensure it's visible
+        const viewportWidth = window.innerWidth;
+        if (buttonRect.left < 125) {
+            // Too close to left edge
+            popup.style.left = '0';
+        } else if (buttonRect.left + 125 > viewportWidth) {
+            // Too close to right edge
+            popup.style.left = 'auto';
+            popup.style.right = '0';
+        } else {
+            // Center aligned
+            popup.style.left = '-112px';
+        }
+    }
+    
+    // Close popup when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!popup.contains(e.target) && e.target !== thumbsButton) {
+            popup.style.display = 'none';
+        }
+    });
+});
+<\/script>`;
+        
+        // Show the generated code
+        generatedCode.textContent = code;
+        codeOutput.style.display = 'block';
+        
+        // Scroll to code output
+        codeOutput.scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Copy code to clipboard
+    copyButton.addEventListener('click', () => {
+        const codeText = generatedCode.textContent;
+        navigator.clipboard.writeText(codeText).then(() => {
+            // Show success message
+            successMessage.style.display = 'block';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 2000);
+        });
+    });
+    
+    // Reset form
+    resetButton.addEventListener('click', () => {
+        form.reset();
+        
+        // Reset colors
+        colorOptions.forEach(opt => opt.classList.remove('selected'));
+        colorOptions[0].classList.add('selected');
+        currentColor = '#0066cc';
+        
+        // Reset emojis
+        mainEmojiChoices.forEach(opt => opt.classList.remove('selected'));
+        mainEmojiChoices[0].classList.add('selected');
+        currentMainEmoji = '👍';
+        
+        // Reset preview count
+        previewCount = 0;
+        
+        // Reset emoji map
+        currentEmojiMap = {
+            1: '👌',
+            2: '🎯',
+            3: '💯',
+            4: '🔄'
+        };
+        
+        // Update displays
+        document.getElementById('emoji-display-1').textContent = '👌';
+        document.getElementById('emoji-display-2').textContent = '🎯';
+        document.getElementById('emoji-display-3').textContent = '💯';
+        document.getElementById('emoji-display-4').textContent = '🔄';
+        
+        // Update preview
+        updatePreview();
+        
+        // Hide code output
+        codeOutput.style.display = 'none';
+    });
+    
+    // Generate button click handler
+    generateButton.addEventListener('click', generateCode);
+    
+    // Initialize preview
+    updatePreview();
+</script>
+</body>
+</html>
+
+
+
+
+
