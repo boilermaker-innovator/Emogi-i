@@ -1,4 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iTab Live Preview</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
+        textarea { width: 90%; height: 150px; margin: 10px 0; }
+        #preview-container { border: 1px solid #ddd; padding: 10px; min-height: 50px; }
+        button { padding: 10px; margin-top: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
 
+    <h2>iTab Live Preview</h2>
+    <p>Paste your iTab HTML code below:</p>
+
+    <textarea id="htmlInput" placeholder="Enter iTab HTML here..."></textarea><br>
+
+    <button onclick="updatePreview()">Show Preview</button>
+    <button onclick="copyCode()">Copy Code</button>
+
+    <h3>Live Preview:</h3>
+    <div id="preview-container"></div>
+
+    <script>
+        function updatePreview() {
+            const htmlCode = document.getElementById("htmlInput").value;
+            document.getElementById("preview-container").innerHTML = htmlCode;
+        }
+
+        function copyCode() {
+            const textArea = document.getElementById("htmlInput");
+            textArea.select();
+            document.execCommand("copy");
+            alert("Code copied to clipboard!");
+        }
+    </script>
+
+</body>
+</html>
+
+<br>
+<br>
+<br>
 <!DOCTYPE html>
 <html lang="en">
 <head>
