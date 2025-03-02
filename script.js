@@ -1,8 +1,4 @@
-I understand the preview isn't showing the popup as expected. Let's fix that issue. There may be a problem with the popup creation or display logic.
 
-Let me modify the JavaScript file to ensure the popup works properly in the preview:
-
-```javascript
 // DOM Elements
 const form = document.getElementById('generator-form');
 const productNameInput = document.getElementById('product-name');
