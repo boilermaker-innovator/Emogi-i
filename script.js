@@ -47,13 +47,6 @@ let reasonCounts = {
 };
 let totalFeedbackCount = 0;
 
-// Initialize feedback display
-document.addEventListener('DOMContentLoaded', function() {
-    // Create popup immediately
-    createPreviewPopup();
-    updateFeedbackDisplay();
-});
-
 // Toggle emoji choice panels
 emojiToggles.forEach(toggle => {
     toggle.addEventListener('click', function() {
@@ -124,7 +117,7 @@ colorOptions.forEach(option => {
     });
 });
 
-// Preview interaction 
+// Preview button click handler with fixed popup positioning
 previewButton.addEventListener('click', function(e) {
     e.preventDefault();
     e.stopPropagation();
@@ -134,51 +127,52 @@ previewButton.addEventListener('click', function(e) {
     previewCounter.textContent = previewCount;
     previewCounter.style.display = 'inline-flex';
     
-    // Update popup content
-    updatePreviewPopupContent();
-    
-    // Toggle popup visibility
-    if (previewPopup.style.display === 'none' || previewPopup.style.display === '') {
-        positionPreviewPopup();
-        previewPopup.style.display = 'block';
+    // Create popup if it doesn't exist yet
+    if (!isPreviewPopupCreated) {
+        createPreviewPopup();
     } else {
-        previewPopup.style.display = 'none';
+        // Update existing popup
+        updatePreviewPopupContent();
     }
+    
+    // Force the popup to display
+    previewPopup.style.display = 'block';
+    
+    // Position the popup properly below the button
+    previewPopup.style.position = 'absolute';
+    previewPopup.style.left = '-100px';
+    previewPopup.style.top = '40px';
+    previewPopup.style.zIndex = '1000';
 });
 
 function createPreviewPopup() {
-    // Create the popup if it doesn't exist
-    if (!previewPopup) {
-        previewPopup = document.createElement('div');
-        previewPopup.classList.add('thumbs-i-popup');
-        previewPopup.id = 'preview-popup';
-        previewPopup.style.display = 'none';
-        
-        // Add content to popup
-        updatePreviewPopupContent();
-        
-        // Add popup to the preview container
-        previewContainer.appendChild(previewPopup);
-        
-        // Add event listeners to reason options
-        addReasonOptionListeners();
-        
-        // Close popup when clicking outside
-        document.addEventListener('click', function(e) {
-            if (previewPopup && !previewPopup.contains(e.target) && e.target !== previewButton) {
-                previewPopup.style.display = 'none';
-            }
-        });
-        
-        isPreviewPopupCreated = true;
-    }
+    // Create the popup
+    previewPopup = document.createElement('div');
+    previewPopup.classList.add('thumbs-i-popup');
+    previewPopup.id = 'preview-popup';
+    
+    // Add content to popup
+    updatePreviewPopupContent();
+    
+    // Add popup to the preview container
+    previewContainer.appendChild(previewPopup);
+    
+    // Add event listeners to reason options
+    addReasonOptionListeners();
+    
+    // Close popup when clicking outside
+    document.addEventListener('click', function(e) {
+        if (previewPopup && !previewContainer.contains(e.target) || 
+            (previewContainer.contains(e.target) && e.target !== previewButton && !previewPopup.contains(e.target))) {
+            previewPopup.style.display = 'none';
+        }
+    });
+    
+    isPreviewPopupCreated = true;
 }
 
 function updatePreviewPopupContent() {
-    if (!previewPopup) {
-        createPreviewPopup();
-        return;
-    }
+    if (!previewPopup) return;
     
     const reason1 = reason1Input.value || 'Helpful info';
     const reason2 = reason2Input.value || 'Great explanation';
@@ -220,35 +214,9 @@ function updatePreviewPopupContent() {
         </div>
     `;
     
-    // Style the popup feedback summary
-    const popupStyle = document.createElement('style');
-    popupStyle.textContent = `
-        .popup-feedback-summary {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #eee;
-        }
-        .popup-feedback-header {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 5px;
-            color: #555;
-        }
-        .popup-feedback-stats {
-            font-size: 12px;
-            color: #666;
-        }
-        .popup-stat-item {
-            margin-top: 3px;
-            padding-left: 5px;
-        }
-    `;
-    document.head.appendChild(popupStyle);
-    
     // Add event listeners to reason options
     addReasonOptionListeners();
 }
-
 function addReasonOptionListeners() {
     if (!previewPopup) return;
     
@@ -266,13 +234,14 @@ function addReasonOptionListeners() {
                 // Deselect this option
                 this.classList.remove('selected');
                 
-                // Decrement counter
+                // Decrement counters
                 reasonCounts[reason]--;
                 totalFeedbackCount--;
                 
-                // Update the count in the button
-                const countElement = this.querySelector('.count');
-                countElement.textContent = reasonCounts[reason];
+                // Update displays
+                this.querySelector('.count').textContent = reasonCounts[reason];
+                document.getElementById(`public-count-${reason}`).textContent = reasonCounts[reason];
+                totalCountDisplay.textContent = `${totalFeedbackCount} ${totalFeedbackCount === 1 ? 'response' : 'responses'}`;
                 
                 // Hide thanks message
                 thanksMessage.style.display = 'none';
@@ -282,13 +251,17 @@ function addReasonOptionListeners() {
                 this.classList.add('selected');
                 this.style.backgroundColor = currentColor;
                 
-                // Increment counter
+                // Increment counters
                 reasonCounts[reason]++;
                 totalFeedbackCount++;
                 
-                // Update the count in the button
-                const countElement = this.querySelector('.count');
-                countElement.textContent = reasonCounts[reason];
+                // Update displays
+                this.querySelector('.count').textContent = reasonCounts[reason];
+                document.getElementById(`public-count-${reason}`).textContent = reasonCounts[reason];
+                totalCountDisplay.textContent = `${totalFeedbackCount} ${totalFeedbackCount === 1 ? 'response' : 'responses'}`;
+                
+                // Force the feedback display to show
+                feedbackReasons.classList.add('active');
                 
                 // Show thanks message
                 thanksMessage.style.display = 'block';
@@ -301,43 +274,8 @@ function addReasonOptionListeners() {
             
             // Update feedback display
             updateFeedbackDisplay();
-            
-            // Update the popup content
-            setTimeout(() => {
-                updatePreviewPopupContent();
-            }, 1600); // After popup closes
         });
     });
-}
-
-function positionPreviewPopup() {
-    if (!previewPopup) return;
-    
-    // Ensure selected options have the right color
-    const selectedOptions = previewPopup.querySelectorAll('.reason-option.selected');
-    selectedOptions.forEach(option => {
-        option.style.backgroundColor = currentColor;
-    });
-    
-    // Update thanks message color
-    const thanksMessage = previewPopup.querySelector('.thanks-message');
-    if (thanksMessage) {
-        thanksMessage.style.color = currentColor;
-    }
-    
-    // Position popup to be visible in viewport
-    if (window.innerHeight < 500) {
-        // Position below for small screens
-        previewPopup.style.top = 'auto';
-        previewPopup.style.bottom = '-220px';
-    } else {
-        // Position above for larger screens
-        previewPopup.style.top = '-220px';
-        previewPopup.style.bottom = 'auto';
-    }
-    
-    // Center horizontally
-    previewPopup.style.left = '-110px';
 }
 
 // Update preview based on form inputs
@@ -424,8 +362,8 @@ function generateCode() {
     const reason3 = reason3Input.value || 'Just what I needed';
     const reason4 = reason4Input.value || 'Will recommend';
     
-    // Create the HTML code
-    const code = `<!-- Reaction Button for "${productName}" with Counter Support -->
+    // Create the HTML code with dynamic variables
+    const htmlCode = `<!-- Reaction Button for "${productName}" with Counter Support -->
 <div class="thumbs-i-container" id="thumbs-i-container">
     <button class="thumbs-i-button" id="thumbs-i-button">
         ${currentMainEmoji} <span class="i-indicator">i</span>
@@ -492,10 +430,11 @@ function generateCode() {
             </div>
         </div>
     </div>
-</div>
-
-<style>
-/* Thumbs-i Button Styles */
+</div>`;
+    
+    // Add style and script tags
+    const styleCode = `<style>
+/* Reaction Button Styles */
 .thumbs-i-container {
     display: inline-block;
     position: relative;
@@ -558,7 +497,8 @@ function generateCode() {
 .thumbs-i-popup {
     display: none;
     position: absolute;
-    left: 0;
+    top: 40px;
+    left: -100px;
     background: white;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
@@ -566,8 +506,6 @@ function generateCode() {
     z-index: 1000;
     animation: thumbsiFadeIn 0.2s ease-out;
     padding: 12px;
-    /* Default position top */
-    top: -160px;
 }
 
 @keyframes thumbsiFadeIn {
@@ -717,15 +655,15 @@ function generateCode() {
     opacity: 1;
     height: auto;
 }
-</style>
-
-<script>
-// Reaction Button Functionality
+</style>`;
+    
+    const scriptCode = `<script>
+// Initialize reaction button functionality
 document.addEventListener('DOMContentLoaded', function() {
     // Elements
     const thumbsButton = document.getElementById('thumbs-i-button');
     const popup = document.getElementById('thumbs-i-popup');
-    const reasonOptions = document.querySelectorAll('.reason-option');
+    const reasonOptions = popup.querySelectorAll('.reason-option');
     const thanksMessage = document.getElementById('thanks-message');
     const mainCounter = document.getElementById('main-counter');
     const feedbackDisplay = document.getElementById('thumbs-i-feedback-display');
@@ -734,7 +672,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // State
     let isLiked = false;
-    let selectedReason = null;
     let mainCount = 0;
     let reasonCounts = {
         reason1: 0,
@@ -744,28 +681,20 @@ document.addEventListener('DOMContentLoaded', function() {
     };
     let totalFeedbackCount = 0;
     
-    // Show/hide popup with smart positioning
+    // Show/hide popup when clicking the button
     thumbsButton.addEventListener('click', function(e) {
         e.stopPropagation();
         
+        // Increment counter on first click
         if (!isLiked) {
             isLiked = true;
-            thumbsButton.style.opacity = '1';
-            
-            // Increment main counter
             mainCount++;
             mainCounter.textContent = mainCount;
             mainCounter.style.display = 'inline-flex';
-            
-            // Smart positioning logic
-            positionPopup();
-            popup.style.display = 'block';
-        } else {
-            popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
-            if (popup.style.display === 'block') {
-                positionPopup();
-            }
         }
+        
+        // Toggle popup
+        popup.style.display = popup.style.display === 'block' ? 'none' : 'block';
     });
     
     // Handle reason selection
@@ -781,16 +710,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (this.classList.contains('selected')) {
                 // Deselect this option
                 this.classList.remove('selected');
-                selectedReason = null;
-                thanksMessage.style.display = 'none';
                 
                 // Decrement counters
                 reasonCounts[reason]--;
                 totalFeedbackCount--;
+                
                 countElement.textContent = reasonCounts[reason];
                 publicCountElement.textContent = reasonCounts[reason];
+                
+                thanksMessage.style.display = 'none';
             } else {
-                // Deselect all options
+                // Select this option
                 reasonOptions.forEach(opt => {
                     if (opt.classList.contains('selected')) {
                         const prevReason = opt.dataset.reason;
@@ -802,21 +732,27 @@ document.addEventListener('DOMContentLoaded', function() {
                         
                         prevCountElement.textContent = reasonCounts[prevReason];
                         prevPublicCountElement.textContent = reasonCounts[prevReason];
+                        
                         opt.classList.remove('selected');
                     }
                 });
                 
                 // Select this option
                 this.classList.add('selected');
-                selectedReason = reason;
                 this.style.backgroundColor = '${currentColor}';
-                thanksMessage.style.display = 'block';
                 
                 // Increment counters
                 reasonCounts[reason]++;
                 totalFeedbackCount++;
+                
                 countElement.textContent = reasonCounts[reason];
                 publicCountElement.textContent = reasonCounts[reason];
+                
+                // Show thanks message
+                thanksMessage.style.display = 'block';
+                
+                // Show feedback display
+                feedbackReasons.classList.add('active');
                 
                 // Hide popup after a delay
                 setTimeout(() => {
@@ -824,69 +760,31 @@ document.addEventListener('DOMContentLoaded', function() {
                 }, 1500);
             }
             
-            // Update feedback display
-            updateFeedbackDisplay();
+            // Update total count
+            totalCountDisplay.textContent = totalFeedbackCount + (totalFeedbackCount === 1 ? ' response' : ' responses');
+            
+            // Update progress bars
+            updateProgressBars();
             
             ${affiliateLink ? `// Optional: Track click or redirect
-            if (selectedReason) {
-                console.log('Selected reason:', selectedReason);
-                // window.open('${affiliateLink}', '_blank');
-            }` : ''}
+            console.log('Reason selected:', reason);
+            // window.open('${affiliateLink}', '_blank');` : ''}
         });
     });
     
-    // Position popup to be visible in viewport
-    function positionPopup() {
-        // Get button position
-        const buttonRect = thumbsButton.getBoundingClientRect();
-        const popupHeight = 160; // Approximate height of popup
-        
-        // Check if there's room above
-        if (buttonRect.top > popupHeight + 20) {
-            // Position above
-            popup.style.top = '-160px';
-            popup.style.bottom = 'auto';
-        } else {
-            // Position below
-            popup.style.top = 'auto';
-            popup.style.bottom = '-160px';
-        }
-        
-        // Adjust horizontal position to ensure it's visible
-        const viewportWidth = window.innerWidth;
-        if (buttonRect.left < 125) {
-            // Too close to left edge
-            popup.style.left = '0';
-        } else if (buttonRect.left + 125 > viewportWidth) {
-            // Too close to right edge
-            popup.style.left = 'auto';
-            popup.style.right = '0';
-        } else {
-            // Center aligned
-            popup.style.left = '-112px';
-        }
-    }
-    
-    // Update feedback display
-    function updateFeedbackDisplay() {
-        // Update total count
-        totalCountDisplay.textContent = totalFeedbackCount + (totalF​​​​​​​​​​​​​​​​
-    // Update feedback display
-    function updateFeedbackDisplay() {
-        // Update total count
-        totalCountDisplay.textContent = totalFeedbackCount + (totalFeedbackCount === 1 ? ' response' : ' responses');
-        
-        // Show the reasons container if there's any feedback
+    // Update progress bars for visualization
+    function updateProgressBars() {
+        // Show/hide feedback reasons based on feedback count
         if (totalFeedbackCount > 0 && !feedbackReasons.classList.contains('active')) {
             feedbackReasons.classList.add('active');
         } else if (totalFeedbackCount === 0) {
             feedbackReasons.classList.remove('active');
         }
         
-        // Calculate percentages for each reason
+        // Get maximum count for scaling
         const maxCount = Math.max(...Object.values(reasonCounts));
         
-        // Update each reason's bar and count
+        // Update each reason's bar and visibility
         for (const [reason, count] of Object.entries(reasonCounts)) {
             const reasonElement = document.getElementById('feedback-' + reason);
             const progressBar = document.getElementById(reason + '-progress');
@@ -907,4 +805,84 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
-</script>
+</script>`;
+    
+    // Show the generated code
+    generatedCode.textContent = htmlCode + styleCode + scriptCode;
+    codeOutput.style.display = 'block';
+}
+
+// Copy code to clipboard
+copyButton.addEventListener('click', () => {
+    const codeText = generatedCode.textContent;
+    navigator.clipboard.writeText(codeText).then(() => {
+        // Show success message
+        successMessage.style.display = 'block';
+        setTimeout(() => {
+            successMessage.style.display = 'none';
+        }, 2000);
+    });
+});
+
+// Reset form
+resetButton.addEventListener('click', () => {
+    form.reset();
+    
+    // Reset colors
+    colorOptions.forEach(opt => opt.classList.remove('selected'));
+    colorOptions[0].classList.add('selected');
+    currentColor = '#0066cc';
+    
+    // Reset emojis
+    mainEmojiChoices.forEach(opt => opt.classList.remove('selected'));
+    mainEmojiChoices[0].classList.add('selected');
+    currentMainEmoji = '👍';
+    
+    // Reset preview count
+    previewCount = 0;
+    
+    // Reset emoji map
+    currentEmojiMap = {
+        1: '👌',
+        2: '🎯',
+        3: '💯',
+        4: '🔄'
+    };
+    
+    // Reset displays
+    document.getElementById('emoji-display-1').textContent = '👌';
+    document.getElementById('emoji-display-2').textContent = '🎯';
+    document.getElementById('emoji-display-3').textContent = '💯';
+    document.getElementById('emoji-display-4').textContent = '🔄';
+    
+    // Reset counters
+    reasonCounts = {
+        reason1: 0,
+        reason2: 0,
+        reason3: 0,
+        reason4: 0
+    };
+    totalFeedbackCount = 0;
+    
+    // Reset feedback display
+    feedbackReasons.classList.remove('active');
+    
+    // Reset popup
+    if (previewPopup && previewPopup.parentNode) {
+        previewPopup.parentNode.removeChild(previewPopup);
+    }
+    previewPopup = null;
+    isPreviewPopupCreated = false;
+    
+    // Update preview
+    updatePreview();
+    
+    // Hide code output
+    codeOutput.style.display = 'none';
+});
+
+// Generate button click handler
+generateButton.addEventListener('click', generateCode);
+
+// Initialize preview
+updatePreview();
