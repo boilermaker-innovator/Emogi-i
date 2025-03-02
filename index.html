@@ -1,3 +1,227 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>👍i Generator with Counter Support</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>👍i Generator with Counter Support</h1>
+            <p>Create a customized reaction button with your choice of emoji</p>
+        </div>
+        
+        <div class="main">
+            <div class="form-section">
+                <h2 class="section-title">Create Your Reaction Button</h2>
+                
+                <form id="generator-form">
+                    <div class="form-group">
+                        <label for="product-name">Content Title:</label>
+                        <input type="text" id="product-name" placeholder="Product or Content Name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="affiliate-link">Affiliate Link (optional):</label>
+                        <input type="url" id="affiliate-link" placeholder="https://example.com/your-link">
+                    </div>
+                    
+                    <!-- Main Emoji Selector -->
+                    <div class="main-emoji-selector">
+                        <label>Choose Your Main Emoji:</label>
+                        <div class="main-emoji-choices">
+                            <div class="main-emoji-choice selected" data-emoji="👍">👍</div>
+                            <div class="main-emoji-choice" data-emoji="❤️">❤️</div>
+                            <div class="main-emoji-choice" data-emoji="😍">😍</div>
+                            <div class="main-emoji-choice" data-emoji="👏">👏</div>
+                            <div class="main-emoji-choice" data-emoji="🔥">🔥</div>
+                            <div class="main-emoji-choice" data-emoji="💯">💯</div>
+                            <div class="main-emoji-choice" data-emoji="🙏">🙏</div>
+                            <div class="main-emoji-choice" data-emoji="⭐">⭐</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reason Options with Emoji -->
+                    <div class="reason-inputs">
+                        <label>Reason Options (4):</label>
+                        
+                        <div class="form-group">
+                            <div class="emoji-input-label">
+                                <label for="reason1">Reason 1:</label>
+                                <span class="emoji-toggle" data-target="emoji-choices-1">Show emoji options</span>
+                            </div>
+                            <div class="emoji-input-container">
+                                <div class="emoji-display" id="emoji-display-1">👌</div>
+                                <input type="text" id="reason1" placeholder="Enter reason" value="Helpful info" required>
+                            </div>
+                            <div class="emoji-choices" id="emoji-choices-1" style="display: none;">
+                                <div class="emoji-choice" data-target="1" data-emoji="👌">👌</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="👍">👍</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="✅">✅</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="💡">💡</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="🔍">🔍</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="📚">📚</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="📝">📝</div>
+                                <div class="emoji-choice" data-target="1" data-emoji="📌">📌</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="emoji-input-label">
+                                <label for="reason2">Reason 2:</label>
+                                <span class="emoji-toggle" data-target="emoji-choices-2">Show emoji options</span>
+                            </div>
+                            <div class="emoji-input-container">
+                                <div class="emoji-display" id="emoji-display-2">🎯</div>
+                                <input type="text" id="reason2" placeholder="Enter reason" value="Great explanation" required>
+                            </div>
+                            <div class="emoji-choices" id="emoji-choices-2" style="display: none;">
+                                <div class="emoji-choice" data-target="2" data-emoji="🎯">🎯</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="🔥">🔥</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="💬">💬</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="🗣️">🗣️</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="📊">📊</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="🧠">🧠</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="📢">📢</div>
+                                <div class="emoji-choice" data-target="2" data-emoji="🔠">🔠</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="emoji-input-label">
+                                <label for="reason3">Reason 3:</label>
+                                <span class="emoji-toggle" data-target="emoji-choices-3">Show emoji options</span>
+                            </div>
+                            <div class="emoji-input-container">
+                                <div class="emoji-display" id="emoji-display-3">💯</div>
+                                <input type="text" id="reason3" placeholder="Enter reason" value="Just what I needed" required>
+                            </div>
+                            <div class="emoji-choices" id="emoji-choices-3" style="display: none;">
+                                <div class="emoji-choice" data-target="3" data-emoji="💯">💯</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="✨">✨</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="⚡">⚡</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="🏆">🏆</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="🎁">🎁</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="💪">💪</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="🎉">🎉</div>
+                                <div class="emoji-choice" data-target="3" data-emoji="👏">👏</div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <div class="emoji-input-label">
+                                <label for="reason4">Reason 4:</label>
+                                <span class="emoji-toggle" data-target="emoji-choices-4">Show emoji options</span>
+                            </div>
+                            <div class="emoji-input-container">
+                                <div class="emoji-display" id="emoji-display-4">🔄</div>
+                                <input type="text" id="reason4" placeholder="Enter reason" value="Will recommend" required>
+                            </div>
+                            <div class="emoji-choices" id="emoji-choices-4" style="display: none;">
+                                <div class="emoji-choice" data-target="4" data-emoji="🔄">🔄</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="📣">📣</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="📲">📲</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="📩">📩</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="📱">📱</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="🗣️">🗣️</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="👨‍👩‍👧‍👦">👨‍👩‍👧‍👦</div>
+                                <div class="emoji-choice" data-target="4" data-emoji="👥">👥</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="color-picker">
+                        <label>Button Color:</label>
+                        <div class="color-options">
+                            <div class="color-option selected" style="background-color: #0066cc" data-color="#0066cc"></div>
+                            <div class="color-option" style="background-color: #28a745" data-color="#28a745"></div>
+                            <div class="color-option" style="background-color: #dc3545" data-color="#dc3545"></div>
+                            <div class="color-option" style="background-color: #6c757d" data-color="#6c757d"></div>
+                            <div class="color-option" style="background-color: #6f42c1" data-color="#6f42c1"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button type="button" id="generate-button" class="button primary-button">Generate Code</button>
+                        <button type="button" id="reset-button" class="button secondary-button">Reset Form</button>
+                    </div>
+                </form>
+            </div>
+            
+            <div class="preview-section">
+                <h2 class="section-title">Preview</h2>
+                <div class="preview-container">
+                    <h3 class="preview-title" id="preview-title">Product Review</h3>
+                    <p>This is a preview of your reaction button:</p>
+                    <div class="thumbs-i-container" id="preview-container">
+                        <button class="thumbs-i-button" id="preview-button">
+                            👍 <span class="i-indicator">i</span>
+                            <span class="counter" id="preview-counter">0</span>
+                        </button>
+                    </div>
+                    
+                    <!-- Feedback display area -->
+                    <div class="thumbs-i-feedback-display" id="preview-feedback-display">
+                        <div class="feedback-header">
+                            <span class="feedback-title">People liked this because:</span>
+                            <span class="feedback-total-count" id="feedback-total-count">0 responses</span>
+                        </div>
+                        <div class="feedback-reasons">
+                            <div class="feedback-reason" id="feedback-reason1">
+                                <div class="reason-bar">
+                                    <div class="reason-progress" id="reason1-progress"></div>
+                                    <div class="reason-label"><span id="reason1-emoji">👌</span> <span id="reason1-text">Helpful info</span></div>
+                                    <div class="reason-count" id="public-count-reason1">0</div>
+                                </div>
+                            </div>
+                            <div class="feedback-reason" id="feedback-reason2">
+                                <div class="reason-bar">
+                                    <div class="reason-progress" id="reason2-progress"></div>
+                                    <div class="reason-label"><span id="reason2-emoji">🎯</span> <span id="reason2-text">Great explanation</span></div>
+                                    <div class="reason-count" id="public-count-reason2">0</div>
+                                </div>
+                            </div>
+                            <div class="feedback-reason" id="feedback-reason3">
+                                <div class="reason-bar">
+                                    <div class="reason-progress" id="reason3-progress"></div>
+                                    <div class="reason-label"><span id="reason3-emoji">💯</span> <span id="reason3-text">Just what I needed</span></div>
+                                    <div class="reason-count" id="public-count-reason3">0</div>
+                                </div>
+                            </div>
+                            <div class="feedback-reason" id="feedback-reason4">
+                                <div class="reason-bar">
+                                    <div class="reason-progress" id="reason4-progress"></div>
+                                    <div class="reason-label"><span id="reason4-emoji">🔄</span> <span id="reason4-text">Will recommend</span></div>
+                                    <div class="reason-count" id="public-count-reason4">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="code-output" id="code-output">
+                    <div class="code-title">
+                        <span>Your Reaction Button Code (Copy & Paste This):</span>
+                        <button class="button secondary-button copy-button" id="copy-button">Copy Code</button>
+                    </div>
+                    <div class="code-container">
+                        <pre class="code-text" id="generated-code"></pre>
+                    </div>
+                    <div class="success-message" id="success-message">Code copied to clipboard!</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
